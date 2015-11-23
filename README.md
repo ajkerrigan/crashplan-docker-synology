@@ -73,8 +73,7 @@ for more information.
 
 * gfjardim's Docker Image for CrashPlan (https://hub.docker.com/r/gfjardim/crashplan/)
 was an excellent starting point. I forked it into the `ajkerrigan/crashplan` image
-because I expected to need to make changes, and I wanted to accept ownership for it
-going forward. As of this writing I haven't needed to make a change to the image.
+with the expectation that I'd tweak things as I went along.
 
 * patters over at [PC Load Letter](http://pcloadletter.co.uk/) is a damn hero.
 He has been wrestling with getting CrashPlan to work on Synology devices for years,

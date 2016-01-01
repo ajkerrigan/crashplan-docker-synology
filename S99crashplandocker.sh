@@ -36,7 +36,7 @@ CONTAINER_ID=`${PS_CMD} | tail -n +2 | cut -d ' ' -f 1`
 
 case $1 in
 start)
-    if [ -x ${CONTAINER_ID} ]; then
+    if [ -z ${CONTAINER_ID} ]; then
         echo "No existing CrashPlan container found. Running image \"${IMAGE}\"."
         ${RUN_CMD} ${IMAGE}
     elif [ ${CONTAINER_STATUS} == "exited" ]; then
@@ -49,7 +49,7 @@ start)
     ;;
 
 stop)
-    if [ -x ${CONTAINER_ID} ]; then
+    if [ -z ${CONTAINER_ID} ]; then
         echo "Can't find a CrashPlan container to stop."
     elif [ ${CONTAINER_STATUS} == "running" ]; then
         echo "Stopping CrashPlan container (ID ${CONTAINER_ID})."
@@ -61,7 +61,7 @@ stop)
     ;;
 
 status)
-    if [ -x ${CONTAINER_ID} ]; then
+    if [ -z ${CONTAINER_ID} ]; then
         echo "No CrashPlan container found."
     else
         ${PS_CMD}

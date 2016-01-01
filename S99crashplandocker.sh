@@ -26,7 +26,7 @@ USER_VOLUMES="-v /volume1:/volume1:ro"
 
 VOLUMES="${USER_VOLUMES} -v ${CRASHPLAN_DIR}:/config -v ${DATA_DIR}:/data -v /etc/localtime:/etc/localtime:ro"
 PORTS="-p 4242:4242 -p 4243:4243"
-RUN_CMD="docker run -d -h `hostname` --name=crashplan ${VOLUMES} ${PORTS}"
+RUN_CMD="docker run -d --net=host --name=crashplan ${VOLUMES} ${PORTS}"
 START_CMD="docker start"
 STOP_CMD="docker stop"
 PS_CMD="docker ps --all --filter name=crashplan"

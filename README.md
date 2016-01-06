@@ -18,6 +18,7 @@ This documentation assumes that:
 
 * You have a CrashPlan account, a Synology device and some experience using them
 together.
+* Your Synology device supports Docker (check compatibility [here](https://www.synology.com/en-us/dsm/app_packages/Docker)).
 * You are comfortable connecting to your Synology device using SSH and running
 terminal commands.
 * Docker experience *shouldn't* be necessary, but can't hurt :).
@@ -37,6 +38,13 @@ instances of CrashPlan, in case you decide to switch back to your previous setup
 See [CrashPlan's documentation](http://support.code42.com/CrashPlan/4/Configuring/Using_CrashPlan_On_A_Headless_Computer)
 for help with this, and consult `/usr/local/etc/rc.d/S99crashplandocker.sh status`
 for details about the running CrashPlan instance.
+
+## Upgrading
+
+* NOTE: Upgrades will not occur automatically.
+* Check for updated images by running `docker pull ajkerrigan/crashplan`
+* If the image was updated, run `/usr/local/etc/rc.d/S99crashplandocker.sh recreate`
+to create and start a container based on the new image.
 
 ## Customization
 

@@ -29,39 +29,69 @@ PORTS="-p 4242:4242 -p 4243:4243"
 RUN_CMD="docker run -d --net=host --name=crashplan ${VOLUMES} ${PORTS}"
 START_CMD="docker start"
 STOP_CMD="docker stop"
-PS_CMD="docker ps --all --filter name=crashplan"
+PS_CMD="docker ps --all --filter ancestor=${IMAGE}"
 
-CONTAINER_ID=`${PS_CMD} | tail -n +2 | cut -d ' ' -f 1`
+CONTAINER_ID=`${PS_CMD} --quiet`
 [ ${CONTAINER_ID} ] && CONTAINER_STATUS=`docker inspect --format="{{.SynoStatus}}" ${CONTAINER_ID}`
 
-case $1 in
-start)
-    if [ -z ${CONTAINER_ID} ]; then
+_start ()
+{
+    if [ -z "${CONTAINER_ID}" ]; then
         echo "No existing CrashPlan container found. Running image \"${IMAGE}\"."
         ${RUN_CMD} ${IMAGE}
-    elif [ ${CONTAINER_STATUS} == "exited" ]; then
+    elif [ "${CONTAINER_STATUS}" == "exited" ]; then
         echo "Starting CrashPlan container with ID ${CONTAINER_ID}."
         ${START_CMD} ${CONTAINER_ID}
     else
         echo "Skipping start for CrashPlan container (ID ${CONTAINER_ID}) with \"${CONTAINER_STATUS}\" status."
     fi
-    exit 0
-    ;;
+}
 
-stop)
-    if [ -z ${CONTAINER_ID} ]; then
+_stop ()
+{
+    if [ -z "${CONTAINER_ID}" ]; then
         echo "Can't find a CrashPlan container to stop."
-    elif [ ${CONTAINER_STATUS} == "running" ]; then
+    elif [ "${CONTAINER_STATUS}" == "running" ]; then
         echo "Stopping CrashPlan container (ID ${CONTAINER_ID})."
         ${STOP_CMD} ${CONTAINER_ID}
     else
         echo "Skipping stop for CrashPlan container (ID ${CONTAINER_ID}) with \"${CONTAINER_STATUS}\" status."
     fi
+}
+
+_remove_container ()
+{
+    _stop
+    if [ -n "${CONTAINER_ID}" ]; then
+        echo "Removing CrashPlan container (ID ${CONTAINER_ID})."
+        docker rm ${CONTAINER_ID} && unset CONTAINER_ID
+    fi
+}
+
+_recreate()
+{
+    _remove_container
+    _start
+}
+
+case $1 in
+start)
+    _start
+    exit 0
+    ;;
+
+stop)
+    _stop
+    exit 0
+    ;;
+
+recreate)
+    _recreate
     exit 0
     ;;
 
 status)
-    if [ -z ${CONTAINER_ID} ]; then
+    if [ -z "${CONTAINER_ID}" ]; then
         echo "No CrashPlan container found."
     else
         echo "
@@ -81,8 +111,9 @@ status)
     fi
     exit 0
     ;;
+
 *)
-    /bin/echo "Usage: $0 { start | stop | status }"
+    /bin/echo "Usage: $0 { start | stop | status | recreate }"
     exit 1
     ;;
 

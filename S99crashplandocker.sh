@@ -64,9 +64,20 @@ status)
     if [ -z ${CONTAINER_ID} ]; then
         echo "No CrashPlan container found."
     else
-        ${PS_CMD}
-        echo "Authentication Info for CrashPlan service instance"
-        awk -F ',' '{ print "\n\tPort: " $1 "\n\tAuth Token: " $2 "\n\tHost: " $3 }' ${CRASHPLAN_DIR}/id/.ui_info
+        echo "
+[[ Docker Container Status ]]
+
+`${PS_CMD}`
+
+[[ CrashPlan Service Information ]]
+"
+        awk -F ',' '{
+            printf "%-15s %s\n%-15s %d\n%-15s %-15s\n\n",
+            "Host",$3,
+            "Port",$1,
+            "Auth Token",$2
+        }' ${CRASHPLAN_DIR}/id/.ui_info
+        grep CPVERSION "${CRASHPLAN_DIR}/log/app.log"
     fi
     exit 0
     ;;

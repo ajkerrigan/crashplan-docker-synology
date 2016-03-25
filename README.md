@@ -7,7 +7,7 @@ container. It has been tested successfully in the following configuration:
 
 Device: Synology DS713+  
 RAM: 4GB  
-DSM Version: 5.2-5644 Update 1
+DSM Version: 6.0-7321
 
 I have been running the [PC Load Letter CrashPlan Packages](http://pcloadletter.co.uk/2012/01/30/crashplan-syno-package/)
 for a long time. They certainly made it much easier to deal with CrashPlan updates,
@@ -34,6 +34,7 @@ instances of CrashPlan, in case you decide to switch back to your previous setup
 ## Quick Start
 
 * Ensure that the Docker package is installed through DSM's Package Manager.
+* Stop any existing CrashPlan instances.
 * Copy the `S99crashplandocker.sh` script to the `/usr/local/etc/rc.d` directory.
 * Run `/usr/local/etc/rc.d/S99crashplandocker.sh start` to start the container.
 * Connect to the headless service using CrashPlan Desktop on a remote computer.
@@ -43,10 +44,15 @@ for details about the running CrashPlan instance.
 
 ## Upgrading
 
-* NOTE: Upgrades will not occur automatically.
-* Check for updated images by running `docker pull ajkerrigan/crashplan`
+The CrashPlan service running in your Docker container will update itself automatically.
+However, follow the steps below to make sure the Docker image is up to date.
+
+* To check for updates to the Docker image, run `docker pull ajkerrigan/crashplan`
 * If the image was updated, run `/usr/local/etc/rc.d/S99crashplandocker.sh recreate`
 to create and start a container based on the new image.
+
+* Note: It's a good idea to run the steps above after upgrading DSM (for example,
+after moving from DSM 5.2 to 6.0).
 
 ## Customization
 

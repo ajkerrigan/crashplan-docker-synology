@@ -5,6 +5,7 @@
 #
 # AJ Kerrigan
 
+DOCKER=/var/packages/Docker/target/usr/bin/docker
 IMAGE=ajkerrigan/crashplan
 
 # Pointing CRASHPLAN_DIR to an existing CrashPlan directory will allow
@@ -26,13 +27,13 @@ USER_VOLUMES="-v /volume1:/volume1:ro"
 
 VOLUMES="${USER_VOLUMES} -v ${CRASHPLAN_DIR}:/config -v ${DATA_DIR}:/data -v /etc/localtime:/etc/localtime:ro"
 PORTS="-p 4242:4242 -p 4243:4243"
-RUN_CMD="docker run -d --net=host --name=crashplan ${VOLUMES} ${PORTS}"
-START_CMD="docker start"
-STOP_CMD="docker stop"
-PS_CMD="docker ps --all --filter ancestor=${IMAGE}"
+RUN_CMD="${DOCKER} run -d --net=host --name=crashplan ${VOLUMES} ${PORTS}"
+START_CMD="${DOCKER} start"
+STOP_CMD="${DOCKER} stop"
+PS_CMD="${DOCKER} ps --all --filter ancestor=${IMAGE}"
 
 CONTAINER_ID=`${PS_CMD} --quiet`
-[ ${CONTAINER_ID} ] && CONTAINER_STATUS=`docker inspect --format="{{.SynoStatus}}" ${CONTAINER_ID}`
+[ ${CONTAINER_ID} ] && CONTAINER_STATUS=`${DOCKER} inspect --format="{{.SynoStatus}}" ${CONTAINER_ID}`
 
 _start ()
 {
@@ -64,7 +65,7 @@ _remove_container ()
     _stop
     if [ -n "${CONTAINER_ID}" ]; then
         echo "Removing CrashPlan container (ID ${CONTAINER_ID})."
-        docker rm ${CONTAINER_ID} && unset CONTAINER_ID
+        ${DOCKER} rm ${CONTAINER_ID} && unset CONTAINER_ID
     fi
 }
 

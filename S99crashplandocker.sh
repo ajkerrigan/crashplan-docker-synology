@@ -25,6 +25,23 @@ DATA_DIR="/volume1/CrashPlan/backupArchives"
 # access to /volume1
 USER_VOLUMES="-v /volume1:/volume1:ro"
 
+# Check for overloaded variables in root's home dir
+if [ -e /root/cp-user-vars.sh ]; then
+   echo 'Found the user variables file. Updating...'
+   . /root/cp-user-vars.sh
+else
+   echo 'No user variables file found. Using git defaults. You can change the'
+   echo 'default CrashPlan install directory, the user volumes, and data '
+   echo 'directory by adding those variables to /root/cp-user-vars.sh'
+fi
+
+# Test
+echo "CRASHPLAN_DIR=$CRASHPLAN_DIR"
+echo "DATA_DIR=$DATA_DIR"
+echo "USER_VOLUMES=$USER_VOLUMES"
+# Test
+
+
 VOLUMES="${USER_VOLUMES} -v ${CRASHPLAN_DIR}:/config -v ${DATA_DIR}:/data -v /etc/localtime:/etc/localtime:ro"
 PORTS="-p 4242:4242 -p 4243:4243"
 RUN_CMD="${DOCKER} run -d --net=host --name=crashplan ${VOLUMES} ${PORTS}"

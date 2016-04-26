@@ -5,6 +5,10 @@
 # edit the file contents
 # save the file
 
+# Number of seconds to wait for the Docker daemon before timing out,
+# and the socket we'll test for.
+DOCKER_DAEMON_TIMEOUT=10
+DOCKER_SOCKET="/var/run/docker.sock"
 
 # Pointing CRASHPLAN_DIR to an existing CrashPlan directory will allow
 # the new container to take over for a previous installation, without

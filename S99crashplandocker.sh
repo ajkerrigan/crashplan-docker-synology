@@ -5,8 +5,20 @@
 #
 # AJ Kerrigan
 
+# Without root privileges, all Docker calls will fail. Don't
+# waste time continuing without sufficient authority.
+if [ "${EUID}" -ne 0 ]; then
+   echo 'Please run this script as root or via the sudo command.'
+   exit 1
+fi
+
 DOCKER=/var/packages/Docker/target/usr/bin/docker
 IMAGE=ajkerrigan/crashplan
+
+# Number of seconds to wait for the Docker daemon before timing out,
+# and the socket we'll test for.
+DOCKER_DAEMON_TIMEOUT=10
+DOCKER_SOCKET="/var/run/docker.sock"
 
 # Pointing CRASHPLAN_DIR to an existing CrashPlan directory will allow
 # the new container to take over for a previous installation, without
@@ -91,6 +103,12 @@ _recreate()
     _remove_container
     _start
 }
+
+# Ensure that Docker is running
+while [ ! -e "${DOCKER_SOCKET}" -a $((--DOCKER_DAEMON_TIMEOUT)) -ge 0 ];
+	do sleep 1;
+	echo "Waiting for the Docker daemon (timeout in ${DOCKER_DAEMON_TIMEOUT} seconds)";
+done
 
 case $1 in
 start)

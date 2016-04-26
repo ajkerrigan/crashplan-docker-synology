@@ -105,7 +105,7 @@ _recreate()
 }
 
 # Ensure that Docker is running
-while [ ! -e "${DOCKER_SOCKET}" -a $((--DOCKER_DAEMON_TIMEOUT)) -ge 0 ];
+while [ ! -S "${DOCKER_SOCKET}" -a $((--DOCKER_DAEMON_TIMEOUT)) -ge 0 ];
 	do sleep 1;
 	echo "Waiting for the Docker daemon (timeout in ${DOCKER_DAEMON_TIMEOUT} seconds)";
 done

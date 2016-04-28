@@ -28,7 +28,7 @@ CRASHPLAN_DIR="/usr/local/etc/crashplan"
 # Pointing DATA_DIR to an existing CrashPlan backup archive
 # will allow the new instance of CrashPlan to skip a lot of time
 # synchronizing the backup state.
-DATA_DIR="/volume1/CrashPlan/backupArchives"
+DATA_DIR="/volume1/crashplan/backupArchives"
 
 # Add/change entries here to suit your needs, for example:
 # USER_VOLUMES="-v /volume1:/volume1:ro -v /photos:/photos:ro"

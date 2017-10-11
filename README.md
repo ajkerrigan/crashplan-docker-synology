@@ -2,6 +2,18 @@
 
 [![Join the chat at https://gitter.im/ajkerrigan/crashplan-docker-synology](https://badges.gitter.im/ajkerrigan/crashplan-docker-synology.svg)](https://gitter.im/ajkerrigan/crashplan-docker-synology?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Update: The End of CrashPlan for Home
+
+As of 2017-August-22, Code42 no longer offers CrashPlan for Home. Existing subscriptions will be honored through October of 2018 (see [this announcement](https://www.crashplan.com/en-us/consumer/nextsteps/) for more information).
+
+Running CrashPlan from a NAS has always been a neglected use case from a support perspective, so this move isn't all that surprising. Still, this leaves a question for those of us currently relying on CrashPlan for Home... what do we do instead?
+
+Like many of you, I'll be revisiting other backup options that I previously rejected and many new ones that have arisen over the past few years.
+
+[FernandoMiguel](https://github.com/FernandoMiguel) has created an excellent [sheet](https://docs.google.com/spreadsheets/d/18uZnV-vG8J0jC-pg_v_ozY1BlwYQG6kbOJCAsW_ZGWE/edit#gid=0) comparing various cloud backup/storage offerings. I hope that it is useful to the rest of you who are planning your migrations.
+
+## Overview
+
 This is an attempt to get CrashPlan running on a Synology NAS inside a Docker container. It has been tested successfully in the following configurations:
 
 DSM Version: 6.0-7321
